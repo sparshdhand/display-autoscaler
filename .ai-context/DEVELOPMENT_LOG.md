@@ -10,4 +10,4 @@
 ## Future Roadmap
 - Support per-display customized resolution mappings in configuration.
 
-
+*
