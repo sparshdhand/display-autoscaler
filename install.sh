@@ -4,8 +4,9 @@ set -e
 echo "[Install] Compiling Swift source..."
 swiftc -O main.swift -o display-autoscaler -Xlinker -undefined -Xlinker dynamic_lookup
 
-echo "[Install] Copying executable to /usr/local/bin..."
-sudo cp display-autoscaler /usr/local/bin/display-autoscaler
+echo "[Install] Copying executable to $HOME/bin..."
+mkdir -p "$HOME/bin"
+cp display-autoscaler "$HOME/bin/display-autoscaler"
 
 echo "[Install] Setting up configuration directory..."
 mkdir -p "$HOME/.config/display-autoscaler"
@@ -25,12 +26,20 @@ cat <<EOF > "$AGENT_PLIST"
     <string>com.user.display-autoscaler</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/display-autoscaler</string>
+        <string>$HOME/bin/display-autoscaler</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
     <true/>
+    <key>LimitLoadToSessionType</key>
+    <array>
+        <string>Aqua</string>
+    </array>
+    <key>StandardOutPath</key>
+    <string>$HOME/Library/Logs/display-autoscaler.log</string>
+    <key>StandardErrorPath</key>
+    <string>$HOME/Library/Logs/display-autoscaler.log</string>
 </dict>
 </plist>
 EOF

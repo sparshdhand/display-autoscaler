@@ -51,16 +51,24 @@ func getDisplayDetailsString(displayID: CGDirectDisplayID) -> String {
 
 // --- Feature 1: Force Hardware Probing (Auto-Scanner) ---
 func forceHardwareProbe() {
-    let mainDisplay = CGMainDisplayID()
-    let service = CGDisplayIOServicePort(mainDisplay)
-    if service != 0 {
-        // Option 1 = Force hardware re-probe
-        let kr = IOServiceRequestProbe(service, 1)
-        if kr == 0 {
-            log("[display-autoscaler:info] Triggered background hardware display probe.")
-        } else {
-            log("[display-autoscaler:error] IOServiceRequestProbe failed: \(kr)")
+    var iterator: io_iterator_t = 0
+    let matchingDict = IOServiceMatching("IOFramebuffer")
+    let result = IOServiceGetMatchingServices(0, matchingDict, &iterator)
+    if result == KERN_SUCCESS {
+        var service = IOIteratorNext(iterator)
+        while service != 0 {
+            let kr = IOServiceRequestProbe(service, 1)
+            if kr == 0 {
+                log("[display-autoscaler:info] Triggered background hardware display probe on framebuffer service: \(service).")
+            } else {
+                log("[display-autoscaler:error] IOServiceRequestProbe failed for service \(service): \(kr)")
+            }
+            IOObjectRelease(service)
+            service = IOIteratorNext(iterator)
         }
+        IOObjectRelease(iterator)
+    } else {
+        log("[display-autoscaler:error] IOServiceGetMatchingServices failed: \(result)")
     }
 }
 

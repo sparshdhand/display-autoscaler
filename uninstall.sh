@@ -9,9 +9,9 @@ if [ -f "$AGENT_PLIST" ]; then
     rm -f "$AGENT_PLIST"
 fi
 
-if [ -f "/usr/local/bin/display-autoscaler" ]; then
+if [ -f "$HOME/bin/display-autoscaler" ]; then
     echo "[Uninstall] Removing binary..."
-    sudo rm -f "/usr/local/bin/display-autoscaler"
+    rm -f "$HOME/bin/display-autoscaler"
 fi
 
 echo "[Uninstall] Uninstallation completed successfully!"
