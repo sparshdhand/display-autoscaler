@@ -10,4 +10,3 @@
 - Verify dynamic resolution scaling with connected physical external HiDPI displays.
 - Support per-display customized resolution mappings in configuration.
 
-*
