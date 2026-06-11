@@ -2,5 +2,6 @@
   "preferredWidth": 2560,
   "preferredHeight": 1440,
   "requireHiDPI": true,
-  "preferredRefreshRate": 60
+  "preferredRefreshRate": 60,
+  "enablePresenterMirroring": true
 }
